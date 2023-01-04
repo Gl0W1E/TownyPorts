@@ -10,7 +10,7 @@
 #######################################
 
 # How to set up TownyPorts:
-# https://euromc.net/
+# https://github.com/darthpeti/PluginDescriptions/blob/main/townyports.md
 
 uses-economy: true
 #If false, players can't set fees on ports, and travellers won't be charged anything.
@@ -46,7 +46,9 @@ port-travel-warmup-in-ticks: 200
 #A second is 20 minecraft ticks. Use that to calculate your warmup time.
 #Default: 200
 
-
+port-travel-denies-for-enemies: true
+#If true, when a player tries to travel to a port that belongs to a nation which enemies the player's nation, the action will fail.
+#Default: true
 
 
 

@@ -52,10 +52,13 @@ public class PortCommand implements CommandExecutor {
                                                             Location loc3 = world.getBlockAt(X, safeY + 1, Z).getLocation();
                                                             if (LocationUtil.isSafe(loc3)) {
                                                                 final TownBlock loc = TownyAPI.getInstance().getTownBlock(p.getLocation());
-                                                                p.sendMessage("§6[TownyPorts]§a Travelling to this port, this will cost " + Main.instance.getConfig().getString(destination.getUUID().toString()) + Main.getCustomConfig().getString("currency-sign") + "...");
-
+                                                                p.sendMessage("§6[TownyPorts]§a Travelling to this port...");
+                                                                if (Main.getCustomConfig().getBoolean("uses-economy")) {
+                                                                    p.sendMessage("§6[TownyPorts]§a This will cost " + Main.instance.getConfig().getString(destination.getUUID().toString()) + Main.getCustomConfig().getString("currency-sign") + "...");
+                                                                }
                                                                 Confirmation.runOnAccept(()->{
-                                                                    p.sendMessage("§6[TownyPorts]§a You accepted the costs of this trip. You will depart in §b15 seconds§a.");
+                                                                    int secTime = Main.getCustomConfig().getInt("port-travel-warmup-in-ticks")*20;
+                                                                    p.sendMessage("§6[TownyPorts]§a You accepted the costs of this trip. You will depart in §b" + secTime + " seconds§a.");
                                                                     Bukkit.getScheduler().runTaskLater(Main.instance, new Runnable() {
                                                                         @Override
                                                                         public void run() {
@@ -64,9 +67,11 @@ public class PortCommand implements CommandExecutor {
                                                                                 double costDouble = Double.parseDouble(cost);
                                                                                 if (TownyAPI.getInstance().getResident(p.getName()).getAccount().canPayFromHoldings(costDouble)) {
                                                                                     if (loc == TownyAPI.getInstance().getTownBlock(p.getLocation())) {
-                                                                                        TownyAPI.getInstance().getResident(p.getName()).getAccount().payTo(costDouble, destination.getAccount(), "Travelled to port.");
+                                                                                        if (Main.getCustomConfig().getBoolean("uses-economy")) {
+                                                                                            TownyAPI.getInstance().getResident(p.getName()).getAccount().payTo(costDouble, destination.getAccount(), "Travelled to port.");
+                                                                                        }
                                                                                         p.teleport(loc3);
-                                                                                        p.sendMessage("§6[TownyPorts]§a Arrived to port.");
+                                                                                        p.sendMessage("§6[TownyPorts]§a Arrived at the port.");
                                                                                     } else {
                                                                                         p.sendMessage("§6[TownyPorts]§c You have moved away from the port while waiting, teleportation denied.");
                                                                                     }
@@ -98,8 +103,10 @@ public class PortCommand implements CommandExecutor {
 
                                                 }
                                             } else {
-                                                p.sendMessage("§6[TownyPorts]§c You cannot teleport to an enemy nation's ports.");
-                                                return true;
+                                                if (Main.getCustomConfig().getBoolean("port-travel-denies-for-enemies")) {
+                                                    p.sendMessage("§6[TownyPorts]§c You cannot teleport to an enemy nation's ports.");
+                                                    return true;
+                                                }
                                             }
                                         } else {
                                             p.sendMessage("§6[TownyPorts]§c The destination town does not have a nation.");
