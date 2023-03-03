@@ -2,8 +2,9 @@ package net.euromc.townyports.listener;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.TownyMessaging;
+import com.palmergames.bukkit.towny.object.TownBlock;
+
 import net.euromc.townyports.Main;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -16,14 +17,17 @@ public class PlayerTeleportToPortAlert implements Listener {
             return;
         }
 
-        if(event.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)) {
-            Location to = event.getTo();
-            Location from = event.getFrom();
-            if(!TownyAPI.getInstance().isWilderness(to) && !TownyAPI.getInstance().isWilderness(from)) {
-                if(TownyAPI.getInstance().getTownBlock(to).getType().getName().equalsIgnoreCase("Port") && TownyAPI.getInstance().getTownBlock(from).getType().getName().equalsIgnoreCase("Port")) {
-                    TownyMessaging.sendPrefixedTownMessage(TownyAPI.getInstance().getTown(to), "§4" + event.getPlayer().getName() + " has arrived at the town port.");
-                }
-            }
-        }
+        if(!event.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN))
+            return;
+
+        TownBlock toTB = TownyAPI.getInstance().getTownBlock(event.getTo());
+        TownBlock fromTB = TownyAPI.getInstance().getTownBlock(event.getFrom());
+        if (toTB == null || fromTB == null) // Wilderness involced.
+            return;
+
+        if (!toTB.getType().getName().equalsIgnoreCase("port") || !fromTB.getType().getName().equalsIgnoreCase("port"))
+            return;
+
+        TownyMessaging.sendPrefixedTownMessage(TownyAPI.getInstance().getTown(event.getTo()), "§4" + event.getPlayer().getName() + " has arrived at the town port.");
     }
 }
