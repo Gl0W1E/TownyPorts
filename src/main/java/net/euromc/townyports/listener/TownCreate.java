@@ -2,7 +2,6 @@ package net.euromc.townyports.listener;
 
 import net.euromc.townyports.Main;
 import com.palmergames.bukkit.towny.event.NewTownEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
