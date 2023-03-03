@@ -5,6 +5,8 @@ import com.palmergames.bukkit.towny.TownyMessaging;
 import com.palmergames.bukkit.towny.object.TownBlock;
 
 import net.euromc.townyports.Main;
+import net.euromc.townyports.utils.PortPlotUtil;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -25,7 +27,7 @@ public class PlayerTeleportToPortAlert implements Listener {
         if (toTB == null || fromTB == null) // Wilderness involced.
             return;
 
-        if (!toTB.getType().getName().equalsIgnoreCase("port") || !fromTB.getType().getName().equalsIgnoreCase("port"))
+        if (!PortPlotUtil.isPortPlot(toTB) || !PortPlotUtil.isPortPlot(fromTB))
             return;
 
         TownyMessaging.sendPrefixedTownMessage(TownyAPI.getInstance().getTown(event.getTo()), "§4" + event.getPlayer().getName() + " has arrived at the town port.");
