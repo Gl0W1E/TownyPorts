@@ -36,6 +36,7 @@ default-port-fee: 50
 maximum-port-distance-in-chunks: 200
 #The max distance a port can be from another to be travelled to.
 #WARNING: TownyPorts requires you to have 16x16 sized town blocks.
+#WARNING: MUST BE A MULTIPLE OF 20
 #Default: 200
 
 enable-port-arrival-alert: false
