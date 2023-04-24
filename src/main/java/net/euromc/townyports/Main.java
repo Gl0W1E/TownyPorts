@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 public final class Main extends JavaPlugin {
 
@@ -20,7 +19,6 @@ public final class Main extends JavaPlugin {
     private FileConfiguration customConfig;
 
 
-    private static Logger log = Bukkit.getLogger();
     public static String PREFIX;
 
     @Override
@@ -33,10 +31,8 @@ public final class Main extends JavaPlugin {
         setupListeners();
         setupCommands();
 
-        Bukkit.broadcastMessage(PREFIX + "Plugin has been loaded.");
+        printClean(PREFIX + "Plugin has been loaded.");
     }
-
-
 
 
     private void setupListeners() {
@@ -57,25 +53,29 @@ public final class Main extends JavaPlugin {
     }
 
     private void asciiText() {
-        log.info("§e█████████████████████████████████████████████████");
-        log.info("§e██████████████ §a TownyPorts §e██████████████████");
-        log.info("§e█████████████████████████████████████████████████");
-        log.info("");
-        log.info("§a████████  ██████  ██     ██ ███    ██ ██    ██ ");
-        log.info("§a   ██    ██    ██ ██     ██ ████   ██  ██  ██  ");
-        log.info("§a   ██    ██    ██ ██  █  ██ ██ ██  ██   ████   ");
-        log.info("§a   ██    ██    ██ ██ ███ ██ ██  ██ ██    ██    ");
-        log.info("§a   ██     ██████   ███ ███  ██   ████    ██    ");
-        log.info("");
-        log.info("§6    ██████   ██████  ██████  ████████ ███████  ");
-        log.info("§6    ██   ██ ██    ██ ██   ██    ██    ██       ");
-        log.info("§6    ██████  ██    ██ ██████     ██    ███████  ");
-        log.info("§6    ██      ██    ██ ██   ██    ██         ██  ");
-        log.info("§6    ██       ██████  ██   ██    ██    ███████  ");
-        log.info("                    §5by 0xBit & darthpeti       ");
-        log.info("");
-        log.info("§e█████████████████████████████████████████████████");
+        printClean("§e█████████████████████████████████████████████████");
+        printClean("§e██████████████████ §a TownyPorts §e██████████████████");
+        printClean("§e█████████████████████████████████████████████████");
+        printClean("");
+        printClean("§a ████████  ██████  ██     ██ ███    ██ ██    ██ ");
+        printClean("§a    ██    ██    ██ ██     ██ ████   ██  ██  ██  ");
+        printClean("§a    ██    ██    ██ ██  █  ██ ██ ██  ██   ████   ");
+        printClean("§a    ██    ██    ██ ██ ███ ██ ██  ██ ██    ██    ");
+        printClean("§a    ██     ██████   ███ ███  ██   ████    ██    ");
+        printClean("");
+        printClean("§6    ██████   ██████  ██████  ████████ ███████  ");
+        printClean("§6    ██   ██ ██    ██ ██   ██    ██    ██       ");
+        printClean("§6    ██████  ██    ██ ██████     ██    ███████  ");
+        printClean("§6    ██      ██    ██ ██   ██    ██         ██  ");
+        printClean("§6    ██       ██████  ██   ██    ██    ███████  ");
+        printClean("                    §5by 0xBit & darthpeti       ");
+        printClean("");
+        printClean("§e█████████████████████████████████████████████████");
     }
+
+	private void printClean(String line) {
+		Bukkit.getConsoleSender().sendMessage(line);
+	}
 
     public void createCustomConfig() {
         customConfigFile = new File(getDataFolder(), "settings.yml");
@@ -100,7 +100,7 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        Bukkit.broadcastMessage(PREFIX + "Plugin has been unloaded.");
+        printClean(PREFIX + "Plugin has been unloaded.");
         saveConfig();
     }
 
