@@ -27,38 +27,39 @@ public class PortPrice implements CommandExecutor {
             return true;
         }
 
+        if (args.length != 1) {
+            player.sendMessage(Main.PREFIX + "§5Correct usage: `/setportprice <amount>`");
+            return true;
+        }
 
-            if (args.length >= 1) {
-                if (args[0].matches("[0-9]+")) {
-                    if (TownyAPI.getInstance().getResident(player.getName()).isMayor()) {
-                        double dbl = Double.parseDouble(args[0]);
-                        if (dbl >= Main.getCustomConfig().getInt("minimum-port-fee")) {
-                            if (Main.getCustomConfig().getInt("maximum-port-fee") >= dbl) {
-                                if (Main.instance.getConfig().getString(TownyAPI.getInstance().getResident(player.getName()).getTownOrNull().getUUID().toString()) != null) {
-                                    Main.instance.getConfig().createSection(TownyAPI.getInstance().getResident(player.getName()).getTownOrNull().getUUID().toString());
-                                }
-                                Main.instance.getConfig().set(TownyAPI.getInstance().getResident(player.getName()).getTownOrNull().getUUID().toString(), dbl);
-                                Main.instance.saveConfig();
+        if (!args[0].matches("[0-9]+")) {
+            player.sendMessage(Main.PREFIX + "§c That is not an integer.");
+            return true;
+        }
 
-                                player.sendMessage("§6[TownyPorts]§a Successfully set the port travel fee to " + dbl + Main.getCustomConfig().getString("currency-sign") + ".");
-                            } else {
-                                player.sendMessage("§6[TownyPorts]§c A port's travel fee must not be higher than " + Main.getCustomConfig().getInt("maximum-port-fee") + Main.getCustomConfig().getString("currency-sign"));
-                            }
-                        } else {
-                            player.sendMessage("§6[TownyPorts]§c A port's travel fee must not be lower than " + + Main.getCustomConfig().getInt("minimum-port-fee") + Main.getCustomConfig().getString("currency-sign"));
-                        }
-                    } else {
-                        player.sendMessage("§6[TownyPorts]§c You are not the mayor of your town.");
-                        return true;
-                    }
-                } else {
-                    player.sendMessage("§6[TownyPorts]§c That is not an integer.");
-                    return true;
-                }
-            } else {
-                player.sendMessage("§6[TownyPorts]§5 Correct usage: `/setportprice <amount>`.");
-                return true;
-            }
+        if (!TownyAPI.getInstance().getResident(player.getName()).isMayor()) {
+            player.sendMessage(Main.PREFIX + "§c You are not the mayor of your town.");
+            return true;
+        }
+
+        double dbl = Double.parseDouble(args[0]);
+
+        if (dbl < Main.getCustomConfig().getInt("minimum-port-fee")) {
+            player.sendMessage(Main.PREFIX + "§c A port's travel fee must not be lower than " + + Main.getCustomConfig().getInt("minimum-port-fee") + Main.getCustomConfig().getString("currency-sign"));
+            return true;
+        }
+
+        if (Main.getCustomConfig().getInt("maximum-port-fee") < dbl) {
+            player.sendMessage(Main.PREFIX + "§c A port's travel fee must not be higher than " + Main.getCustomConfig().getInt("maximum-port-fee") + Main.getCustomConfig().getString("currency-sign"));
+        }
+
+        if (Main.instance.getConfig().getString(TownyAPI.getInstance().getResident(player.getName()).getTownOrNull().getUUID().toString()) != null) {
+            Main.instance.getConfig().createSection(TownyAPI.getInstance().getResident(player.getName()).getTownOrNull().getUUID().toString());
+        }
+        Main.instance.getConfig().set(TownyAPI.getInstance().getResident(player.getName()).getTownOrNull().getUUID().toString(), dbl);
+        Main.instance.saveConfig();
+        player.sendMessage(Main.PREFIX + "§a Successfully set the port travel fee to " + dbl + Main.getCustomConfig().getString("currency-sign") + ".");
+
         return false;
     }
 }
