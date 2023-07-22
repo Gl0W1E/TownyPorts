@@ -1,11 +1,11 @@
 name: TownyPorts
 version: '${project.version}'
-main: net.euromc.townyports.Main
+main: net.euromc.townyports.PortsMain
 api-version: 1.18
 depend: [ Towny ]
 authors: [ 0xBit , darthpeti ]
 description: TownyPorts is a plugin that allows you traverse the vast distance of the world through a system of ports designated all around the Minecraft world.
-website: https://github.com/darthpeti/Ports
+website: https://github.com/darthpeti/TownyPorts
 commands:
     port:
       aliases: []
