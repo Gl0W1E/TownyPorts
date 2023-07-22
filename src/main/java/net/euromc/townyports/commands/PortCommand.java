@@ -43,6 +43,11 @@ public class PortCommand extends BaseCommand implements CommandExecutor {
 
 	private void parsePortCommand(@NotNull CommandSender sender, @NotNull String[] args) throws TownyException {
 
+		if (!(sender instanceof Player)) {
+			PortsMain.instance.getLogger().info("You must run this command as a Player!");
+			return;
+		}
+
 		Player p = (Player) sender;
 
 		if (args.length == 0)
@@ -96,7 +101,8 @@ public class PortCommand extends BaseCommand implements CommandExecutor {
 			if (!cooldown.containsKey(p.getUniqueId()) || System.currentTimeMillis() - cooldown.get(p.getUniqueId()) > cdSec*1000) {
 				cooldown.put(p.getUniqueId(), System.currentTimeMillis());
 			} else {
-				p.sendMessage(PortsMain.PREFIX + "§cYou need to wait another " + Math.round(cdSec/1000) + " to use this command again.");
+				long calc = (System.currentTimeMillis() - cooldown.get(p.getUniqueId()))/1000;
+				p.sendMessage(PortsMain.PREFIX + "§cYou need to wait another " + Math.round(cdSec - calc) + " seconds to use this command again.");
 				return;
 			}
 			int warmup = PortsMain.getCustomConfig().getInt("port-travel-warmup-in-ticks");
