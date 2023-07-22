@@ -31,7 +31,7 @@ public final class PortsMain extends JavaPlugin {
         setupListeners();
         setupCommands();
 
-        printClean(PREFIX + "Plugin has been loaded.");
+        printClean(PREFIX + "Plugin has been loaded properly.");
     }
 
 

@@ -20,7 +20,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class PortCommand extends BaseCommand implements CommandExecutor {
+
+	private final HashMap<UUID, Long> cooldown;
+	public PortCommand() {
+		this.cooldown = new HashMap<>();
+	}
 
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
@@ -85,6 +93,13 @@ public class PortCommand extends BaseCommand implements CommandExecutor {
 					+ PortsMain.getCustomConfig().getString("currency-sign") + "...");
 		}
 		Confirmation.runOnAccept(() -> {
+			int cdSec = PortsMain.getCustomConfig().getInt("port-travel-cooldown-in-seconds");
+			if (!cooldown.containsKey(p.getUniqueId()) || System.currentTimeMillis() - cooldown.get(p.getUniqueId()) > cdSec*1000) {
+				cooldown.put(p.getUniqueId(), System.currentTimeMillis());
+			} else {
+				p.sendMessage(PortsMain.PREFIX + "§cYou need to wait another " + Math.round(cdSec/1000) + " to use this command again.");
+				return;
+			}
 			int warmup = PortsMain.getCustomConfig().getInt("port-travel-warmup-in-ticks");
 			int secTime = warmup * 20;
 			p.sendMessage("§6[TownyPorts]§a You accepted the costs of this trip. You will depart in §b" + secTime + " seconds§a.");

@@ -9,9 +9,6 @@
 #######################################
 #######################################
 
-# How to set up TownyPorts:
-# https://github.com/darthpeti/PluginDescriptions/blob/main/townyports.md
-
 uses-economy: true
 #If false, players can't set fees on ports, and travellers won't be charged anything.
 #Additionally, the /setportprice and /portprice commands will be disabled too.
@@ -46,6 +43,10 @@ enable-port-arrival-alert: false
 port-travel-warmup-in-ticks: 200
 #A second is 20 minecraft ticks. Use that to calculate your warmup time.
 #Default: 200
+
+port-travel-cooldown-in-seconds: 60
+# This is recommended to be higher than a 20th of the warmup value above.
+#Default: 60
 
 port-travel-denies-for-enemies: true
 #If true, when a player tries to travel to a port that belongs to a nation which enemies the player's nation, the action will fail.
