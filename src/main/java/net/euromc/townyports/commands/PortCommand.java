@@ -43,52 +43,51 @@ public class PortCommand extends BaseCommand implements CommandExecutor {
 
 	private void parsePortCommand(@NotNull CommandSender sender, @NotNull String[] args) throws TownyException {
 
-		catchConsole(sender);
 		Player p = (Player) sender;
 
 		if (args.length == 0)
 			throw new TownyException("§6[TownyPorts]§d Correct usage: `/port <destination-town>`.");
 
 		if (!TownyAPI.getInstance().getResident(p.getName()).hasTown())
-			throw new TownyException("§6[TownyPorts]§c You do not belong to a town.");
+			throw new TownyException("§c You do not belong to a town.");
 
 		Town t = TownyAPI.getInstance().getResident(p.getName()).getTownOrNull();
 		if (!t.hasNation())
-			throw new TownyException("§6[TownyPorts]§c You do not belong to a nation.");
+			throw new TownyException("§c You do not belong to a nation.");
 
 		if (TownyAPI.getInstance().isWilderness(p.getLocation()))
-			throw new TownyException("§6[TownyPorts]§c You cannot teleport to a port from the wilderness.");
+			throw new TownyException("§c You cannot teleport to a port from the wilderness.");
 
 		if (!PortPlotUtil.isPortPlot(TownyAPI.getInstance().getTownBlock(p)))
-			throw new TownyException("§6[TownyPorts]§c You can only go to another port starting from a port plot.");
+			throw new TownyException("§c You can only go to another port starting from a port plot.");
 
 		Town destinationTown = getTownOrThrow(args[0]);
 		if (!destinationTown.hasNation())
-			throw new TownyException("§6[TownyPorts]§c The destination town does not have a nation.");
+			throw new TownyException("§c The destination town does not have a nation.");
 
 		if (destinationTown.getNationOrNull().hasEnemy(t.getNationOrNull())
 				&& PortsMain.getCustomConfig().getBoolean("port-travel-denies-for-enemies"))
-			throw new TownyException("§6[TownyPorts]§c You cannot teleport to an enemy nation's ports.");
+			throw new TownyException("§c You cannot teleport to an enemy nation's ports.");
 
 		if (!PortPlotUtil.hasPortPlot(destinationTown))
-			throw new TownyException("§6[TownyPorts]§c That town does not have a port.");
+			throw new TownyException("§c That town does not have a port.");
 
 		TownBlock tb = PortPlotUtil.getPortPlot(destinationTown);
 		WorldCoord wc = tb.getWorldCoord();
 		if (MathUtil.distance(TownyAPI.getInstance().getTownBlock(p.getLocation()).getWorldCoord(), wc) > 2750)
-			throw new TownyException("§6[TownyPorts]§c The port is too far away.");
+			throw new TownyException("§c The port is too far away.");
 
 		Location destinationLoc = getDestinationSpawnLocation(wc);
 
 		if (!LocationUtil.isSafe(destinationLoc))
-			throw new TownyException("§6[TownyPorts]§c The destination port's location is not safe.");
+			throw new TownyException("§c The destination port's location is not safe.");
 
 		final TownBlock loc = TownyAPI.getInstance().getTownBlock(p.getLocation());
 		p.sendMessage("§6[TownyPorts]§a Travelling to this port...");
 
 		boolean costsMoney = PortsMain.getCustomConfig().getBoolean("uses-economy");
 		if (costsMoney) {
-			p.sendMessage("§6[TownyPorts]§a This will cost "
+			p.sendMessage( PortsMain.PREFIX + "§aThis will cost "
 					+ PortsMain.instance.getConfig().getString(destinationTown.getUUID().toString())
 					+ PortsMain.getCustomConfig().getString("currency-sign") + "...");
 		}
@@ -101,7 +100,7 @@ public class PortCommand extends BaseCommand implements CommandExecutor {
 				return;
 			}
 			int warmup = PortsMain.getCustomConfig().getInt("port-travel-warmup-in-ticks");
-			int secTime = warmup * 20;
+			int secTime = Math.round(warmup/20);
 			p.sendMessage("§6[TownyPorts]§a You accepted the costs of this trip. You will depart in §b" + secTime + " seconds§a.");
 
 			Bukkit.getScheduler().runTaskLater(PortsMain.instance, new Runnable() {
@@ -113,7 +112,8 @@ public class PortCommand extends BaseCommand implements CommandExecutor {
 					}
 
 					double costDouble = Double.parseDouble(PortsMain.instance.getConfig().getString(destinationTown.getUUID().toString()));
-					if (costsMoney && !TownyAPI.getInstance().getResident(p.getName()).getAccount().payTo(costDouble, destinationTown.getAccount(), "Travelled to Port.")) {
+					boolean usesEco = PortsMain.getCustomConfig().getBoolean("uses-economy");
+					if (usesEco && costsMoney && !TownyAPI.getInstance().getResident(p.getName()).getAccount().payTo(costDouble, destinationTown.getAccount(), "Travelled to Port.")) {
 						p.sendMessage("§6[TownyPorts]§c You cannot afford to travel to this port");
 						return;
 					}
