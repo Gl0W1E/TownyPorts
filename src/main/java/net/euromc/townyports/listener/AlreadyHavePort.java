@@ -5,8 +5,6 @@ import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlockTypeCache;
 import com.palmergames.bukkit.towny.object.TownBlockTypeHandler;
 
-import net.euromc.townyports.utils.PortPlotUtil;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -14,7 +12,7 @@ import org.bukkit.event.Listener;
 public class AlreadyHavePort implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onTwoPorts(PlotPreChangeTypeEvent event) {
-        if(PortPlotUtil.isPortPlot(event.getNewType()) && countPortPlotsInTown(event.getTownBlock().getTownOrNull()) > 0) {
+        if(event.getNewType().toString().equals("port") && countPortPlotsInTown(event.getTownBlock().getTownOrNull()) > 0) {
             event.setCancelled(true);
             event.setCancelMessage("§cA town cannot have more than one port.");
         }

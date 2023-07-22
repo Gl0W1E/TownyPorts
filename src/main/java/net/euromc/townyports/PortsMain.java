@@ -12,9 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public final class Main extends JavaPlugin {
+public final class PortsMain extends JavaPlugin {
 
-    public static Main instance;
+    public static PortsMain instance;
     private File customConfigFile;
     private FileConfiguration customConfig;
 

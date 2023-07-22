@@ -30,7 +30,7 @@ The settings.yml file (located in */serverdirectory/plugins/TownyPorts/*) is use
 When a player wants to create a port as a town assistant or mayor, they must stand on a plot and type */plot set port*.\
 They must make sure that the 4 middle blocks of the plot (at Y Level 61) are in an Ocean biome. Otherwise, the action will fail.
 
-A town must not have more than two port plots. It's simply impossible with the TownyPorts plugin installed.
+A town must not have more than one port plot. It's simply impossible with the TownyPorts plugin installed.
 
 If a player wants to teleport to another port, they need to type the command */port* followed by the name of the town that owns the port, while standing on a port plot.\
 They need to make sure the port is not too close and not too far away from their current location, according to the administrators' *settings.yml* configuration.

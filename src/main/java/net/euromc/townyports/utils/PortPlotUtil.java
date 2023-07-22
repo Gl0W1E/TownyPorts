@@ -8,7 +8,7 @@ import com.palmergames.bukkit.towny.object.TownBlockType;
 import com.palmergames.bukkit.towny.object.TownBlockTypeCache.CacheType;
 import com.palmergames.bukkit.towny.object.TownBlockTypeHandler;
 
-public class PortPlotUtil {
+public final class PortPlotUtil {
 
 	public static boolean isPortPlot(TownBlock tb) {
 		return isPortPlot(tb.getType());

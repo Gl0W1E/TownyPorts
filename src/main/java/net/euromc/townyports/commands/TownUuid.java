@@ -1,7 +1,7 @@
 package net.euromc.townyports.commands;
 
 import com.palmergames.bukkit.towny.TownyAPI;
-import net.euromc.townyports.Main;
+import net.euromc.townyports.PortsMain;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,41 +19,41 @@ public class TownUuid implements CommandExecutor {
             Player p = (Player) sender;
 
             if (!p.hasPermission("townyports.townuuid")) {
-                p.sendMessage(Main.PREFIX + "§cYou do not have the required permission for this command.");
+                p.sendMessage(PortsMain.PREFIX + "§cYou do not have the required permission for this command.");
                 return true;
             }
 
             if (args.length != 1) {
-                p.sendMessage(Main.PREFIX + "§5Correct usage: `/townuuid <town-name>`");
+                p.sendMessage(PortsMain.PREFIX + "§5Correct usage: `/townuuid <town-name>`");
                 return true;
             }
 
             String townName = args[0];
 
             if (TownyAPI.getInstance().getTown(townName) == null) {
-                p.sendMessage(Main.PREFIX + "§cThis town does not exist!");
+                p.sendMessage(PortsMain.PREFIX + "§cThis town does not exist!");
                 return true;
             }
 
             String sUUID = TownyAPI.getInstance().getTown(townName).getUUID().toString();
-            p.sendMessage(Main.PREFIX + "§e" + sUUID);
+            p.sendMessage(PortsMain.PREFIX + "§e" + sUUID);
 
         } else {
 
             if (args.length != 1) {
-                Bukkit.getLogger().info(Main.PREFIX + "§5Correct usage: `/townuuid <town-name>`");
+                Bukkit.getLogger().info(PortsMain.PREFIX + "§5Correct usage: `/townuuid <town-name>`");
                 return true;
             }
 
             String townName = args[0];
 
             if (TownyAPI.getInstance().getTown(townName) == null) {
-                Bukkit.getLogger().info(Main.PREFIX + "§cThis town does not exist.");
+                Bukkit.getLogger().info(PortsMain.PREFIX + "§cThis town does not exist.");
                 return true;
             }
 
             String sUUID = TownyAPI.getInstance().getTown(townName).getUUID().toString();
-            Bukkit.getLogger().info(Main.PREFIX + "§e" + sUUID);
+            Bukkit.getLogger().info(PortsMain.PREFIX + "§e" + sUUID);
 
         }
         return false;

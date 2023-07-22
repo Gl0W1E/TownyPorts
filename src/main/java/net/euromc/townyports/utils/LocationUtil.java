@@ -8,7 +8,7 @@ public class LocationUtil {
 
 
     //Determines if a teleportation is clear for a player to stand.
-    public static final boolean isSafe(Location location) {
+    public static boolean isSafe(Location location) {
         // Ensure the player's feet aren't in a block
         Block feet = location.getBlock();
         if (!feet.getType().isAir()) {

@@ -1,6 +1,6 @@
 package net.euromc.townyports.commands;
 
-import net.euromc.townyports.Main;
+import net.euromc.townyports.PortsMain;
 import net.euromc.townyports.utils.LocationUtil;
 import net.euromc.townyports.utils.PortPlotUtil;
 
@@ -59,7 +59,7 @@ public class PortCommand extends BaseCommand implements CommandExecutor {
 			throw new TownyException("§6[TownyPorts]§c The destination town does not have a nation.");
 
 		if (destinationTown.getNationOrNull().hasEnemy(t.getNationOrNull())
-				&& Main.getCustomConfig().getBoolean("port-travel-denies-for-enemies"))
+				&& PortsMain.getCustomConfig().getBoolean("port-travel-denies-for-enemies"))
 			throw new TownyException("§6[TownyPorts]§c You cannot teleport to an enemy nation's ports.");
 
 		if (!PortPlotUtil.hasPortPlot(destinationTown))
@@ -78,18 +78,18 @@ public class PortCommand extends BaseCommand implements CommandExecutor {
 		final TownBlock loc = TownyAPI.getInstance().getTownBlock(p.getLocation());
 		p.sendMessage("§6[TownyPorts]§a Travelling to this port...");
 
-		boolean costsMoney = Main.getCustomConfig().getBoolean("uses-economy");
+		boolean costsMoney = PortsMain.getCustomConfig().getBoolean("uses-economy");
 		if (costsMoney) {
 			p.sendMessage("§6[TownyPorts]§a This will cost "
-					+ Main.instance.getConfig().getString(destinationTown.getUUID().toString())
-					+ Main.getCustomConfig().getString("currency-sign") + "...");
+					+ PortsMain.instance.getConfig().getString(destinationTown.getUUID().toString())
+					+ PortsMain.getCustomConfig().getString("currency-sign") + "...");
 		}
 		Confirmation.runOnAccept(() -> {
-			int warmup = Main.getCustomConfig().getInt("port-travel-warmup-in-ticks");
+			int warmup = PortsMain.getCustomConfig().getInt("port-travel-warmup-in-ticks");
 			int secTime = warmup * 20;
 			p.sendMessage("§6[TownyPorts]§a You accepted the costs of this trip. You will depart in §b" + secTime + " seconds§a.");
 
-			Bukkit.getScheduler().runTaskLater(Main.instance, new Runnable() {
+			Bukkit.getScheduler().runTaskLater(PortsMain.instance, new Runnable() {
 				@Override
 				public void run() {
 					if (!p.isOnline()) {
@@ -97,7 +97,7 @@ public class PortCommand extends BaseCommand implements CommandExecutor {
 						return;
 					}
 
-					double costDouble = Double.parseDouble(Main.instance.getConfig().getString(destinationTown.getUUID().toString()));
+					double costDouble = Double.parseDouble(PortsMain.instance.getConfig().getString(destinationTown.getUUID().toString()));
 					if (costsMoney && !TownyAPI.getInstance().getResident(p.getName()).getAccount().payTo(costDouble, destinationTown.getAccount(), "Travelled to Port.")) {
 						p.sendMessage("§6[TownyPorts]§c You cannot afford to travel to this port");
 						return;

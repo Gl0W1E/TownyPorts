@@ -4,8 +4,6 @@ import com.palmergames.bukkit.towny.TownySettings;
 import com.palmergames.bukkit.towny.event.*;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 
-import net.euromc.townyports.utils.PortPlotUtil;
-
 import org.bukkit.block.Biome;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +14,7 @@ public class PlotChangeType implements Listener {
 
 	@EventHandler
     public void onPlotChangeType(PlotPreChangeTypeEvent event) {
-        if (!PortPlotUtil.isPortPlot(event.getNewType()))
+        if (!event.getNewType().toString().equals("plot"))
             return;
         if (isInOceanBiome(event.getTownBlock().getWorldCoord()))
             return;
