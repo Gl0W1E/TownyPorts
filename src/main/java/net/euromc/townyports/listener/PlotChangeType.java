@@ -14,7 +14,7 @@ public class PlotChangeType implements Listener {
 
 	@EventHandler
     public void onPlotChangeType(PlotPreChangeTypeEvent event) {
-        if (!event.getNewType().toString().equals("plot"))
+        if (!event.getNewType().getName().equals("port"))
             return;
         if (isInOceanBiome(event.getTownBlock().getWorldCoord()))
             return;

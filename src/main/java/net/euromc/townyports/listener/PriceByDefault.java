@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 
 public class PriceByDefault implements Listener {
     @EventHandler
-    public void doSomething(PlotChangeTypeEvent event) {
+    public void onPlotChangeType(PlotChangeTypeEvent event) {
         if(!event.getTownBlock().getTypeName().equals("port")) {
             return;
         }
